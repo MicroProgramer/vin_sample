@@ -55,13 +55,17 @@ class _ScreenHomeState extends State<ScreenHome> {
 
                 var response = await http.get(Uri.parse(baseUrl+vin), headers: {
                   'Content-Type': 'application/json',
-                  'Accept': 'application/json',
+                  'Accept': '*/*',
                   'authorization': 'Basic NTllNTY5MGEtYzI0OC00ZTlkLWE3NTItZWQ4OGE4Nzc4ZjBk',
-                  'partner-token': 'f4d12fa52a77488986172e8f83d122d1'
+                  'partner-token': 'f4d12fa52a77488986172e8f83d122d1',
+                  "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+                  "Access-Control-Allow-Credentials": "true", // Required for cookies, authorization headers with HTTPS
+                  "Access-Control-Allow-Headers": "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale",
+                  "Access-Control-Allow-Methods": "POST, OPTIONS"
                 }).catchError((error){
                   Get.snackbar("Error", error.toString());
                   setState(() {
-                    loading = true;
+                    loading = false;
                   });
                 });
 
@@ -87,7 +91,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                   String model = data['model'].toString();
                   String manufacture = data['manufacturer'].toString();
 
-                  String url = "https://viewspakistan.com/api/?make=$make&input=$manufacture&year=$year&style=$model";
+                  String url = "http://viewspakistan.com/api/?make=$make&input=$manufacture&year=$year&style=$model";
 
 
                   htmlOpenLink2(url);
