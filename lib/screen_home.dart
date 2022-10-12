@@ -44,6 +44,11 @@ class _ScreenHomeState extends State<ScreenHome> {
                 String vin = vinController.text;
                 String baseUrl = "http://api.carmd.com/v3.0/decode?vin=";
 
+                if(vin.isEmpty){
+                  Get.snackbar("Alert", "VIN Required");
+                  return;
+                }
+
                 setState(() {
                   loading = true;
                 });
@@ -53,6 +58,11 @@ class _ScreenHomeState extends State<ScreenHome> {
                   'Accept': 'application/json',
                   'authorization': 'Basic NTllNTY5MGEtYzI0OC00ZTlkLWE3NTItZWQ4OGE4Nzc4ZjBk',
                   'partner-token': 'f4d12fa52a77488986172e8f83d122d1'
+                }).catchError((error){
+                  Get.snackbar("Error", error.toString());
+                  setState(() {
+                    loading = true;
+                  });
                 });
 
                 print(response.body);
