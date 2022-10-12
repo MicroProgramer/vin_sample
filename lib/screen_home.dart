@@ -53,12 +53,16 @@ class _ScreenHomeState extends State<ScreenHome> {
                 var jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
                 print(jsonResponse['message']['code']);
 
-                if (jsonResponse['message']['code'].toString() != "0"){
-                  Get.snackbar("Error", jsonResponse['message']);
+                if ((jsonResponse['message']['code'] as dynamic).toString() != "0"){
+                  Get.snackbar("Error", jsonResponse['message']['message'], colorText: Colors.white, backgroundColor: Colors.black54);
+
+                  setState(() {
+                    loading = false;
+                  });
                   return;
                 } else {
 
-                  Map<String, dynamic> data = (jsonResponse['data'] ?? {}) as Map<String, dynamic>;
+                  var data = (jsonResponse['data'] ?? {}) as Map<String, dynamic>;
 
                   String year = data['year'].toString();
                   String make = data['make'].toString();
@@ -68,10 +72,10 @@ class _ScreenHomeState extends State<ScreenHome> {
                   String url = "https://viewspakistan.com/api/?make=$make&input=$manufacture&year=$year&style=$model";
 
 
+
                   htmlOpenLink(url);
+                  launchUrl(url);
                 }
-
-
 
                 setState(() {
                   loading = false;
